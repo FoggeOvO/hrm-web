@@ -17,7 +17,7 @@ const Footer: React.FC = () => {
         },
         {
           key: 'telegram',
-          title: 'Ro',
+          title: 'Ro.',
           href: 'https://t.me/Ro15888',
           blankTarget: true,
         },
