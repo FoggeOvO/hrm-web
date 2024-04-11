@@ -129,9 +129,6 @@ export const request : RequestConfig  = {
     }
   ],
   responseInterceptors: [
-    response => {
-      const {data = {} as any, config} = response
-      return data
-    }
+  
   ]
 };

@@ -1,6 +1,6 @@
 import { Footer } from '@/components';
 import { login } from '@/services/ant-design-pro/api';
-import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+import MD5 from 'crypto-js/md5';
 import {
   GooglePlusOutlined,
   LockOutlined,
@@ -112,28 +112,35 @@ const Login: React.FC = () => {
     }
   };
 
-  // const token = useModel('token')
 
   //登录检查函数
   const handleSubmit = async (values: API.LoginParams) => {
     try {
-      // 登录
 
-      // console.log('@@token ----->' ,token)
-      const msg = await login({ ...values });
+      //登录
+      const loginInfo = {
+        ...values,
+        password: MD5(values.password as string).toString()
+      }
+
+  
+      const result = await login(loginInfo)
       
-      // if (msg.status === 'ok') {
-      //   const defaultLoginSuccessMessage = intl.formatMessage({
-      //     id: 'pages.login.success',
-      //     defaultMessage: '登录成功！',
-      //   });
-      //   message.success(defaultLoginSuccessMessage);
-      //   await fetchUserInfo();
-      //   history.push('/');
-      //   return;
-      // }
+      if (result.msg === 'success') {
+        const defaultLoginSuccessMessage = intl.formatMessage({
+          id: 'pages.login.success',
+          defaultMessage: '登录成功！',
+        });
+        message.success(defaultLoginSuccessMessage);
+        localStorage.setItem('token',result.data || '')
+        // await fetchUserInfo();
+        history.push('/');
+        return;
+      }
       // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+      setUserLoginState(result);
+      console.log('@@msg ---->',result)
+      console.log('@@userLoginState --->',userLoginState)
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',
@@ -143,7 +150,8 @@ const Login: React.FC = () => {
       message.error(defaultLoginFailureMessage);
     }
   };
-  const { status} = userLoginState;
+  const {msg} = userLoginState;
+  console.log('@@msg--->',msg)
 
   return (
     <div className={styles.container}>
@@ -188,7 +196,7 @@ const Login: React.FC = () => {
         >
           <Divider  />
 
-          {status === 'error'  && (
+          {msg !== 'success'  && (
             <LoginMessage
               content={intl.formatMessage({
                 id: 'pages.login.accountLogin.errorMessage',
