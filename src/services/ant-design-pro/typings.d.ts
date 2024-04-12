@@ -2,25 +2,28 @@
 /* eslint-disable */
 
 declare namespace API {
+  type Result = {
+    code?: number,
+    msg?: string,
+    data?: any,
+    timestamp?: number
+  }
+
   type CurrentUser = {
-    name?: string;
-    avatar?: string;
-    userid?: string;
-    email?: string;
-    signature?: string;
-    title?: string;
-    group?: string;
-    tags?: { key?: string; label?: string }[];
-    notifyCount?: number;
-    unreadCount?: number;
-    country?: string;
-    access?: string;
-    geographic?: {
-      province?: { label?: string; key?: string };
-      city?: { label?: string; key?: string };
-    };
-    address?: string;
-    phone?: string;
+    id?: number;
+    username?: string;
+    password?: string;
+    type?: string;
+    gender?: string;
+    lastname?: string;
+    level?: string;
+    workcode?: string;
+    position?: string;
+    depid?: number;
+    hiredate?: string;
+    access?: number;
+    deleted?: number;
+    version?: number;
   };
 
   type LoginResult = {

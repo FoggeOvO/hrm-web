@@ -1,5 +1,5 @@
 import { Footer } from '@/components';
-import { login } from '@/services/ant-design-pro/api';
+import { getToken } from '@/services/auth/api';
 import MD5 from 'crypto-js/md5';
 import {
   GooglePlusOutlined,
@@ -95,7 +95,7 @@ const LoginMessage: React.FC<{
 };
 
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
+  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({msg:'success'});
   const { initialState, setInitialState } = useModel('@@initialState');
   const { styles } = useStyles();
   const intl = useIntl();
@@ -118,14 +118,14 @@ const Login: React.FC = () => {
     try {
 
       //登录
+      //1.先对密码进行MD5加密
       const loginInfo = {
         ...values,
         password: MD5(values.password as string).toString()
       }
-
-  
-      const result = await login(loginInfo)
-      
+      //2.获取token
+      const result = await getToken(loginInfo)
+      //3.根据返回结果进行登录状态判断
       if (result.msg === 'success') {
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
@@ -133,13 +133,13 @@ const Login: React.FC = () => {
         });
         message.success(defaultLoginSuccessMessage);
         localStorage.setItem('token',result.data || '')
-        // await fetchUserInfo();
+        await fetchUserInfo();
         history.push('/');
         return;
       }
       // 如果失败去设置用户错误信息
       setUserLoginState(result);
-      console.log('@@msg ---->',result)
+
       console.log('@@userLoginState --->',userLoginState)
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({
