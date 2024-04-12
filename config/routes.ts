@@ -39,9 +39,65 @@ export default [
       {
         path: '/org/dep',
         name: 'dep',
-        icon: 'cluster',
         component: './Dept'
       }
+    ]
+  },
+  {
+    path: '/hrm',
+    name: 'hrm',
+    icon: 'user',
+    component: '',
+    routes:[
+      {
+        path: '/hrm/info',
+        name: 'info',
+        component: './Hrm'
+      }
+    ]
+  },
+  {
+    path: '/att',
+    name: 'att',
+    icon: 'dashboard',
+    component: '',
+    routes:[
+      {
+        path: '/att/result',
+        name: 'att-result',
+        component: './Hrm'
+      },
+    ]
+  },
+  {
+    path: '/sal',
+    name: 'sal',
+    icon: 'dollar',
+    component: '',
+    routes:[
+      {
+        path: '/sal/basic',
+        name: 'sal-basic',
+        component: './Hrm'
+      },
+      {
+        path: '/sal/cul',
+        name: 'sal-cul',
+        component: './Hrm'
+      }
+    ]
+  },
+  {
+    path: '/acc',
+    name: 'acc',
+    icon: 'safety',
+    component: '',
+    routes:[
+      {
+        path: '/acc/role',
+        name: 'acc-role',
+        component: './Hrm'
+      },
     ]
   },
   {

@@ -57,9 +57,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
       },
     },
-    waterMarkProps: {
-      content: initialState?.currentUser?.lastname,
-    },
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
