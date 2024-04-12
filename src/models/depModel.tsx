@@ -2,17 +2,18 @@ import {getDept} from '@/services/hrm/api'
 import { useEffect, useState } from 'react'
 
 type depInfo = {
-    id?: number;
-    depname?: string;
-    depcode?: any;
-    parent?: any;
-    type?: any;
-    visable?: any;
-    deleted?: any;
+    id: number;
+    depname: string;
+    depcode?: string;
+    parent: number;
+    type?: number;
+    visable?: number;
+    deleted?: number;
 }
 
-const depModel = async () => {
-    const [dep,setDept] = useState<Array<depInfo>>([{}])
+const depModel =  () => {
+    const [dep,setDept] = useState<Array<depInfo>>([])
+
     useEffect(() => {
         getDept()
         .then(res => {
@@ -22,6 +23,7 @@ const depModel = async () => {
         .catch(
             err => console.log(err)
         )
+        console.log('@@dep1 --->',dep)
     },[])
 
     return{

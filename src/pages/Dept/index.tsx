@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import { PageContainer } from '@ant-design/pro-components';
 import { Card, Tree, TreeDataNode, TreeProps } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import {getDept} from '@/services/hrm/api'
+import { useModel } from '@umijs/max';
+import {convertTree} from './util'
 
 const Dept: React.FC = () => {
 
@@ -10,57 +11,12 @@ const Dept: React.FC = () => {
     console.log('selected', selectedKeys, info);
   };
 
-  useEffect(() =>{
-    const fetchdata = async () => {
-      const data = await getDept()
-
-    }
+  const dep = useModel('depModel')
+  // const treeData = convertTree()
 
 
-  },[])
 
-  const treeData: TreeDataNode[] = [
-    {
-      title: 'parent 1',
-      key: '0-0',
-      children: [
-        {
-          title: 'parent 1-0',
-          key: '0-0-0',
-          children: [
-            {
-              title: 'leaf',
-              key: '0-0-0-0',
-            },
-          ],
-        },
-        {
-          title: 'parent 1-1',
-          key: '0-0-1',
-          children: [
-            {
-              title: 'leaf',
-              key: '0-0-1-0',
-            },
-          ],
-        },
-        {
-          title: 'parent 1-2',
-          key: '0-0-2',
-          children: [
-            {
-              title: 'leaf',
-              key: '0-0-2-0',
-            },
-            {
-              title: 'leaf',
-              key: '0-0-2-1',
-            },
-          ],
-        },
-      ],
-    },
-  ];
+  
 
   return (
     <PageContainer   >
@@ -76,7 +32,7 @@ const Dept: React.FC = () => {
               switcherIcon={<DownOutlined />}
               defaultExpandedKeys={['0-0-0']}
               onSelect={onSelect}
-              treeData={treeData}
+              // treeData={treeData}
             />
           </Card>
           <Card id='content-left' style={{ height: '100%', width: '68%' }}>
