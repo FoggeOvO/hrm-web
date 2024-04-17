@@ -9,6 +9,11 @@ declare namespace API {
     timestamp?: number
   }
 
+ type DreeDataNode = {
+    key: number,
+    title: string,
+    children:DreeDataNode[]
+  }
   type CurrentUser = {
     id?: number;
     username?: string;

@@ -17,8 +17,7 @@ import Settings from '../../../../config/defaultSettings';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import { createStyles } from 'antd-style';
-
-
+import { getDept } from '@/services/hrm/api';
 
 
 const useStyles = createStyles(({ token }) => {
@@ -60,7 +59,6 @@ const useStyles = createStyles(({ token }) => {
 //其他登录方式
 const ActionIcons = () => {
   const { styles } = useStyles();
-
   return (
     <>
       <GooglePlusOutlined key="GoogleCircleOutlined" className={styles.action}/>
@@ -104,13 +102,18 @@ const Login: React.FC = () => {
     const userInfo = await initialState?.fetchUserInfo?.();
     if (userInfo) {
       flushSync(() => {
-        setInitialState((s) => ({
-          ...s,
-          currentUser: userInfo,
-        }));
+        setInitialState((s) => {
+         return {          
+            ...s,
+            currentUser: userInfo,
+          }
+        });
       });
     }
   };
+
+
+  const { setDept} = useModel('depModel')
 
 
   //登录检查函数
@@ -134,6 +137,9 @@ const Login: React.FC = () => {
         message.success(defaultLoginSuccessMessage);
         localStorage.setItem('token',result.data || '')
         await fetchUserInfo();
+        const dep = (await getDept()).data;
+        setDept(dep);
+        console.log('@@dep2 --->', dep)
         history.push('/');
         return;
       }
