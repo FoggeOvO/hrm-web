@@ -12,7 +12,7 @@ import {
   ProFormText,
 } from '@ant-design/pro-components';
 import { FormattedMessage, history, SelectLang, useIntl, useModel, Helmet } from '@umijs/max';
-import { Alert, message,Divider  } from 'antd';
+import { Alert, message, Divider } from 'antd';
 import Settings from '../../../../config/defaultSettings';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -61,7 +61,7 @@ const ActionIcons = () => {
   const { styles } = useStyles();
   return (
     <>
-      <GooglePlusOutlined key="GoogleCircleOutlined" className={styles.action}/>
+      <GooglePlusOutlined key="GoogleCircleOutlined" className={styles.action} />
     </>
   );
 };
@@ -93,7 +93,7 @@ const LoginMessage: React.FC<{
 };
 
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({msg:'success'});
+  const [userLoginState, setUserLoginState] = useState<API.LoginResult>({ msg: 'success' });
   const { initialState, setInitialState } = useModel('@@initialState');
   const { styles } = useStyles();
   const intl = useIntl();
@@ -103,7 +103,7 @@ const Login: React.FC = () => {
     if (userInfo) {
       flushSync(() => {
         setInitialState((s) => {
-         return {          
+          return {
             ...s,
             currentUser: userInfo,
           }
@@ -113,7 +113,7 @@ const Login: React.FC = () => {
   };
 
 
-  const { setDept} = useModel('depModel')
+  const { setDept } = useModel('depModel')
 
 
   //登录检查函数
@@ -135,18 +135,17 @@ const Login: React.FC = () => {
           defaultMessage: '登录成功！',
         });
         message.success(defaultLoginSuccessMessage);
-        localStorage.setItem('token',result.data || '')
+        localStorage.setItem('token', result.data || '')
         await fetchUserInfo();
         const dep = (await getDept()).data;
         setDept(dep);
-        console.log('@@dep2 --->', dep)
         history.push('/');
         return;
       }
       // 如果失败去设置用户错误信息
       setUserLoginState(result);
 
-      console.log('@@userLoginState --->',userLoginState)
+      console.log('@@userLoginState --->', userLoginState)
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',
@@ -156,8 +155,8 @@ const Login: React.FC = () => {
       message.error(defaultLoginFailureMessage);
     }
   };
-  const {msg} = userLoginState;
-  console.log('@@msg--->',msg)
+  const { msg } = userLoginState;
+  console.log('@@msg--->', msg)
 
   return (
     <div className={styles.container}>
@@ -200,9 +199,9 @@ const Login: React.FC = () => {
             await handleSubmit(values as API.LoginParams);
           }}
         >
-          <Divider  />
+          <Divider />
 
-          {msg !== 'success'  && (
+          {msg !== 'success' && (
             <LoginMessage
               content={intl.formatMessage({
                 id: 'pages.login.accountLogin.errorMessage',
@@ -210,53 +209,53 @@ const Login: React.FC = () => {
               })}
             />
           )}
-      
-            <>
-              <ProFormText
-                name="username"
-                fieldProps={{
-                  size: 'large',
-                  prefix: <UserOutlined />,
-                }}
-                placeholder={intl.formatMessage({
-                  id: 'pages.login.username.placeholder',
-                  defaultMessage: '用户名: admin or user',
-                })}
-                rules={[
-                  {
-                    required: true,
-                    message: (
-                      <FormattedMessage
-                        id="pages.login.username.required"
-                        defaultMessage="请输入用户名!"
-                      />
-                    ),
-                  },
-                ]}
-              />
-              <ProFormText.Password
-                name="password"
-                fieldProps={{
-                  size: 'large',
-                  prefix: <LockOutlined />,
-                }}
-                placeholder={intl.formatMessage({
-                  id: 'pages.login.password.placeholder',
-                  defaultMessage: '密码: ant.design',
-                })}
-                rules={[
-                  {
-                    required: true,
-                    message: (
-                      <FormattedMessage
-                        id="pages.login.password.required"
-                        defaultMessage="请输入密码！"
-                      />
-                    ),
-                  },
-                ]}
-              />
-            </>
+
+          <>
+            <ProFormText
+              name="username"
+              fieldProps={{
+                size: 'large',
+                prefix: <UserOutlined />,
+              }}
+              placeholder={intl.formatMessage({
+                id: 'pages.login.username.placeholder',
+                defaultMessage: '用户名: admin or user',
+              })}
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <FormattedMessage
+                      id="pages.login.username.required"
+                      defaultMessage="请输入用户名!"
+                    />
+                  ),
+                },
+              ]}
+            />
+            <ProFormText.Password
+              name="password"
+              fieldProps={{
+                size: 'large',
+                prefix: <LockOutlined />,
+              }}
+              placeholder={intl.formatMessage({
+                id: 'pages.login.password.placeholder',
+                defaultMessage: '密码: ant.design',
+              })}
+              rules={[
+                {
+                  required: true,
+                  message: (
+                    <FormattedMessage
+                      id="pages.login.password.required"
+                      defaultMessage="请输入密码！"
+                    />
+                  ),
+                },
+              ]}
+            />
+          </>
           <div
             style={{
               marginBottom: 24,

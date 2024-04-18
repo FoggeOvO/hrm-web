@@ -1,52 +1,89 @@
-import React, { useEffect } from 'react'
-import { PageContainer } from '@ant-design/pro-components';
-import { Card, Tree, TreeDataNode, TreeProps } from 'antd';
+import React, { useState } from 'react'
+import { ModalForm, PageContainer } from '@ant-design/pro-components';
+import { Button, Card, Form, Input, Select, Tree, TreeDataNode, TreeProps } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
-
-
+import { createStyles } from 'antd-style';
+import DepDetail from '@/components/DepDetail';
 
 
 const Dept: React.FC = () => {
 
+  const useStyles = createStyles(({ token }) => {
+    return {
+      container: {
+        height: '500px',
+        fontSize: '14px',
+        titleHeight: 50
+      },
+    };
+  });
+
+  //使用数据流获取全局dep数据，并传给tree
   const depModel = useModel('depModel')
-  console.log('@@dep1 --->', depModel)
-  const {dep}  = depModel
+  const { dep } = depModel
+  const { styles } = useStyles();
+  const treeData: TreeDataNode[] | undefined = dep
 
-  const treeData:API.DreeDataNode[] = [{title:'总部', key:1, children:[{title:'SSC', key:2, children:[{title:'人事部', key:3, children:[{title:'OA组', key:4, children:[]}, {title:'HRBP', key:5, children:[]}, {title:'签证组', key:6, children:[]}, {title:'薪酬组', key:7, children:[]}]}, {title:'行政部', key:8, children:[{title:'固定资产', key:9, children:[]}, {title:'办公室', key:10, children:[]}, {title:'宿舍', key:11, children:[]}]}, {title:'财务部', key:12, children:[]}, {title:'项目中心', key:13, children:[]}]}, {title:'HQ', key:14, children:[{title:'HQPMHR1', key:15, children:[]}, {title:'HQPMHR2', key:16, children:[]}, {title:'HQPMHR3', key:17, children:[]}, {title:'HQPMHR4', key:18, children:[]}, {title:'HQM-DF', key:19, children:[]}, {title:'HQGS', key:20, children:[]}, {title:'HQM-RE', key:21, children:[]}]}, {title:'GE', key:22, children:[]}, {title:'XC', key:23, children:[]}, {title:'XRD', key:24, children:[]}, {title:'资管结算', key:25, children:[]}]}]
-
-  // const treeData:API.DreeDataNode | null   = dep || null
-
-
+  //选择数触发的事件
   const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
     console.log('selected', selectedKeys, info);
   };
 
-  // const treeData = convertTree()
-  return (
-    <PageContainer   >
-      <div id='dept-body' style={{height:'768px',width:'100%',}}>
-        <div id='head' style={{height:'10%' , width:'95%', marginBottom: '8px' }}>
-          <Card id='head-content' style={{ height: '100%', width: '100%'}} ></Card>
-        </div>
-        <div id='content' style={{ display: 'flex', justifyContent: 'space-between', height: '80%' , width:'95%'}}>
-          <Card id='content-right' style={{ height: '100%', width: '28%' }}>
 
+  const [newdep, setNewdep] = useState(false)
+
+  const createDep = () => {
+    setNewdep(true)
+  }
+
+  const [form] = Form.useForm();
+
+  console.log('@@form --->', form)
+
+  return (
+    <PageContainer >
+      <div id='dept-body' style={{ height: '768px', width: '100%', }}>
+        <div id='head' style={{ height: '10%', width: '95%', marginBottom: '8px' }}>
+          <Card id='head-content' style={{ height: '100%', width: '100%' }} >
+            <Button onClick={createDep}>新增部门</Button>
+          </Card>
+        </div>
+        <div id='content' style={{ display: 'flex', justifyContent: 'space-between', height: '80%', width: '95%' }}>
+          <Card id='content-right' style={{ height: '100%', width: '28%' }}>
             <Tree
               showLine
               switcherIcon={<DownOutlined />}
               defaultExpandedKeys={['0-0-0']}
               onSelect={onSelect}
               treeData={treeData}
+              className={styles.container}
+              height={568}
             />
           </Card>
-          <Card id='content-left' style={{ height: '100%', width: '68%' }}>
-
+          <Card id='content-left' style={{ height: '100%', width: '68%', alignItems: 'center' }}>
+            <div id='modal' style={{ height: '100%', width: '68%'}}>
+              <ModalForm
+                title="新建表单"
+                
+                autoFocusFirstInput
+                style={{ height: '568px', width: '68%'}}
+                open={newdep}
+                modalProps={{
+                  destroyOnClose: true,
+                  onCancel: () => setNewdep(false),
+                }}
+              >
+                <DepDetail saveButton={true} />
+              </ModalForm>
+            </div>
+            <div id='content-left-title' style={{ marginBottom: '32px', fontSize: '24px', textAlign: 'center' }}>xxx部门</div>
+            <div id='content-left-detail' style={{ width: '100%', textAlign: 'center' }}>
+              <DepDetail saveButton={false}/>
+            </div>
           </Card>
         </div>
-
       </div>
-
     </PageContainer>
 
   )
