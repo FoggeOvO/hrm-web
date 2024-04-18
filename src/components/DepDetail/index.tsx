@@ -18,8 +18,6 @@ const DepDetail = ({ saveButton } : DepDetailProps) => {
         console.log('Received values of form: ', values);
     };
 
-    console.log('@@isSave --->', saveButton)
-
     const [form] = Form.useForm();
     return (
         <>

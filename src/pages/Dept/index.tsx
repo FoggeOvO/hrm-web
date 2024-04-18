@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ModalForm, PageContainer } from '@ant-design/pro-components';
-import { Button, Card, Form, Input, Select, Tree, TreeDataNode, TreeProps } from 'antd';
+import { Button, Card, Form,Tree, TreeDataNode, TreeProps } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import { createStyles } from 'antd-style';
@@ -18,16 +18,19 @@ const Dept: React.FC = () => {
       },
     };
   });
-
+  const { styles } = useStyles();
   //使用数据流获取全局dep数据，并传给tree
   const depModel = useModel('depModel')
   const { dep } = depModel
-  const { styles } = useStyles();
   const treeData: TreeDataNode[] | undefined = dep
 
   //选择数触发的事件
+  const [title,setTitle] = useState<string>('');
   const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
-    console.log('selected', selectedKeys, info);
+    console.log('selected', selectedKeys,info);
+    const {children,key,title} = info.node 
+    console.log('@@title --->',title)
+   
   };
 
 
@@ -38,8 +41,6 @@ const Dept: React.FC = () => {
   }
 
   const [form] = Form.useForm();
-
-  console.log('@@form --->', form)
 
   return (
     <PageContainer >
@@ -56,6 +57,7 @@ const Dept: React.FC = () => {
               switcherIcon={<DownOutlined />}
               defaultExpandedKeys={['0-0-0']}
               onSelect={onSelect}
+              
               treeData={treeData}
               className={styles.container}
               height={568}
