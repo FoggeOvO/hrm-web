@@ -1,34 +1,77 @@
-import { useParams } from '@umijs/max'
 import { Button, Form, Input, Select } from 'antd'
-import React from 'react'
+import { useForm } from 'antd/es/form/Form'
+import React, { forwardRef } from 'react'
 
-interface DepDetailProps{
-    saveButton:boolean
+interface DepDetailProps {
+    dispaly: boolean
+    selectdInfo?: SelectdInfo
+    save: (value:any) => any
 }
 
+interface SelectdInfo {
+    title: string | undefined
+    key: number | undefined
+    code: string | undefined
+    type: number | undefined
+    note: string | undefined
+    children?: SelectdInfo[]
+}
 
-const DepDetail = ({ saveButton } : DepDetailProps) => {
+export interface ChildComponentMethods {
+    childMethod: () => void;
+}
+
+const DepDetail = (props: DepDetailProps) => {
+
+    const formItemLayout = {
+        labelCol: {
+            xs: { span: 24 },
+            sm: { span: 6 },
+        },
+        wrapperCol: {
+            xs: { span: 24 },
+            sm: { span: 14 },
+        },
+    };
 
     const itemStyle = {
         marginTop: '32px'
     }
     const { Option } = Select;
 
+    const { dispaly, save } = props
+    console.log(props)
+
+    const { title, key, code, type, note } = props.selectdInfo || {}
+
+
     const onFinish = (values: any) => {
+        console.log('@@form --->',form)
         console.log('Received values of form: ', values);
     };
 
-    const [form] = Form.useForm();
+
+
+    const [form] = useForm();
+    form.setFieldsValue({
+        'depname': title,
+        'depid': key,
+        'depcode': code,
+        'type': type,
+        'note': note
+    })
+
     return (
         <>
             <Form
+                {...formItemLayout}
                 form={form}
                 name="editdep"
-                onFinish={onFinish}
+                onFinish={save(onFinish)}
                 initialValues={{}}
                 style={{ maxWidth: '100%', maxHeight: '100%' }}
                 scrollToFirstError
-                disabled={false}
+                disabled={dispaly}
             >
                 <Form.Item
                     style={itemStyle}
@@ -53,7 +96,7 @@ const DepDetail = ({ saveButton } : DepDetailProps) => {
                         },
                     ]}
                 >
-                    <Input disabled={false} />
+                    <Input value={123} disabled={true} />
                 </Form.Item>
 
                 <Form.Item
@@ -66,16 +109,22 @@ const DepDetail = ({ saveButton } : DepDetailProps) => {
                         },
                     ]}
                 >
-                    <Input />
+                    <Input value={123} />
                 </Form.Item>
 
                 <Form.Item
                     style={itemStyle}
-                    name="division"
-                    label="事业处"
+                    name="type"
+                    label="部门类别"
                     rules={[{ required: true, }]}
                 >
-                    <Input />
+                    <Select>
+                        <Option value={-1}>总部</Option>
+                        <Option value={0}>事业群</Option>
+                        <Option value={1}>事业处</Option>
+                        <Option value={2}>部门</Option>
+                        <Option value={3}>组</Option>
+                    </Select>
                 </Form.Item>
 
                 <Form.Item
@@ -95,10 +144,10 @@ const DepDetail = ({ saveButton } : DepDetailProps) => {
                     name="note"
                     label="备注"
                 >
-                    <Input.TextArea autoSize={{ minRows: 4, maxRows: 6 }}  />
+                    <Input.TextArea autoSize={{ minRows: 4, maxRows: 6 }} />
                 </Form.Item>
 
-                <Form.Item style={itemStyle} hidden={saveButton}>
+                <Form.Item style={itemStyle} >
                     <Button type="primary" htmlType="submit">
                         保存
                     </Button>
@@ -107,5 +156,6 @@ const DepDetail = ({ saveButton } : DepDetailProps) => {
         </>
     )
 }
+
 
 export default DepDetail
