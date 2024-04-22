@@ -39,7 +39,7 @@ export default [
       {
         path: '/org/dep',
         name: 'dep',
-        component: './Dept'
+        component: './Dep'
       }
     ]
   },
@@ -96,6 +96,11 @@ export default [
       {
         path: '/acc/role',
         name: 'acc-role',
+        component: './Acc'
+      },
+      {
+        path: '/acc/user',
+        name: 'acc-user',
         component: './Hrm'
       },
     ]

@@ -14,6 +14,7 @@ export default {
   'menu.sal.sal-cul':'薪资计算',
   'menu.acc':'权限管理',
   'menu.acc.acc-role':'角色授权',
+  'menu.acc.acc-user':'用户授权',
   'menu.admin.sub-page': '二级管理页',
   'menu.login': '登录',
   'menu.register': '注册',

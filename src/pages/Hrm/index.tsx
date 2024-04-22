@@ -23,38 +23,49 @@ const Hrm = () => {
 
   //选择数触发的事件
   const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
-    console.log('selected', selectedKeys,info);
-    const {children,key} = info.node 
-    
-    const cKeys = children?children.map(item => item.key):[]
-    const deps = [key,...cKeys]
-    console.log(deps)
-  
-  };
+    console.log('selected', selectedKeys, info);
+    const { children, key } = info.node
 
+    const cKeys = children ? children.map(item => item.key) : []
+    const deps = [key, ...cKeys]
+    console.log(deps)
+
+  };
+  const createUser = () => {}
+
+  const editUser = () => {}
+  
+  const delUser = () => {}
+
+  const saveUser = () => {}
+  
   return (
     <PageContainer >
       <div id='dept-body' style={{ height: '768px', width: '100%', }}>
         <div id='head' style={{ height: '10%', width: '95%', marginBottom: '8px' }}>
+          <Card id='head-content' style={{ height: '100%', width: '100%', }} >
+            <Button type="primary" onClick={createUser} style={{ marginLeft: '15px' }}>新增人员</Button>
+            <Button type="primary" onClick={editUser} style={{ marginLeft: '15px' }}>编辑人员</Button>
+            <Button type="primary" onClick={delUser} style={{ marginLeft: '15px' }}>删除人员</Button>
+            <Button type="primary" onClick={saveUser} style={{ marginLeft: '15px' }}>保存更改</Button>
+          </Card>
         </div>
         <div id='content' style={{ display: 'flex', justifyContent: 'space-between', height: '80%', width: '95%' }}>
-          <Card id='content-right' style={{ height: '100%', width: '28%' }}>
+          <Card id='content-right' style={{ height: '100%', width: '21%' }}>
             <Tree
               showLine
               switcherIcon={<DownOutlined />}
-              defaultExpandedKeys={['0-0-0']}
+              defaultExpandedKeys={['1', '2']}
               onSelect={onSelect}
-              
               treeData={treeData}
               className={styles.container}
               height={568}
             />
           </Card>
-          <Card id='content-left' style={{ height: '100%', width: '68%', alignItems: 'center' }}>
-            
-            <div id='content-left-title' style={{ marginBottom: '32px', fontSize: '24px', textAlign: 'center' }}>xxx部门</div>
+          <Card id='content-left' style={{ height: '100%', width: '78%', alignItems: 'center' }}>
+
             <div id='content-left-detail' style={{ width: '100%', textAlign: 'center' }}>
-              
+
             </div>
           </Card>
         </div>
