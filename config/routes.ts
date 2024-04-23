@@ -35,6 +35,7 @@ export default [
     name: 'org',
     icon: 'apartment',
     component: '',
+    access: 'canHRBP',
     routes:[
       {
         path: '/org/dep',
@@ -48,6 +49,7 @@ export default [
     name: 'hrm',
     icon: 'user',
     component: '',
+    access: 'canHRBP',
     routes:[
       {
         path: '/hrm/info',
@@ -61,6 +63,7 @@ export default [
     name: 'att',
     icon: 'dashboard',
     component: '',
+    access: 'canHRMG',
     routes:[
       {
         path: '/att/result',
@@ -74,6 +77,7 @@ export default [
     name: 'sal',
     icon: 'dollar',
     component: '',
+    access: 'canHRSM',
     routes:[
       {
         path: '/sal/basic',
@@ -92,6 +96,7 @@ export default [
     name: 'acc',
     icon: 'safety',
     component: '',
+    access: 'canAdmin',
     routes:[
       {
         path: '/acc/role',
@@ -126,6 +131,7 @@ export default [
     name: 'list.table-list',
     icon: 'table',
     path: '/list',
+    access: 'canAdmin',
     component: './TableList',
   },
   {

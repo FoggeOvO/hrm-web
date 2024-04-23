@@ -139,6 +139,7 @@ const Login: React.FC = () => {
         await fetchUserInfo();
         const dep = (await getDept()).data;
         setDept(dep);
+        console.log('@@dep --->',dep)
         history.push('/');
         return;
       }
@@ -156,7 +157,7 @@ const Login: React.FC = () => {
     }
   };
   const { msg } = userLoginState;
-  console.log('@@msg--->', msg)
+
 
   return (
     <div className={styles.container}>
