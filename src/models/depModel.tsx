@@ -19,7 +19,8 @@ interface SelectdInfo {
 const depModel = () => {
     const [dep, setDept] = useState<TreeDataNode[]>()
     const [depinfo, setDepinfo] = useState<SelectdInfo>()
-    return { dep, setDept, depinfo, setDepinfo}
+    const [depids, setDepids] = useState<string>('')
+    return { dep, setDept, depinfo, setDepinfo, depids, setDepids}
 
 }
 export default depModel

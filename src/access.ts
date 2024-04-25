@@ -15,7 +15,6 @@ enum useraccess {
 }
 export default function access(initialState: { currentUser?: API.CurrentUser } | undefined) {
   const { currentUser } = initialState ?? {};
-  console.log('@@currentUser --->', currentUser)
 
   return {
     canAdmin: currentUser && currentUser.access === useraccess.administrator,

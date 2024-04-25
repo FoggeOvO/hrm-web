@@ -17,7 +17,7 @@ import Settings from '../../../../config/defaultSettings';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import { createStyles } from 'antd-style';
-import { getDept } from '@/services/hrm/api';
+import { getDept, getUser, getDepIds } from '@/services/hrm/api';
 
 
 const useStyles = createStyles(({ token }) => {
@@ -113,7 +113,9 @@ const Login: React.FC = () => {
   };
 
 
-  const { setDept } = useModel('depModel')
+  const { setDept, setDepids } = useModel('depModel')
+  const {setUsers} = useModel('userModel')
+
 
 
   //登录检查函数
@@ -134,12 +136,18 @@ const Login: React.FC = () => {
           id: 'pages.login.success',
           defaultMessage: '登录成功！',
         });
-        message.success(defaultLoginSuccessMessage);
+        message.success(defaultLoginSuccessMessage)
         localStorage.setItem('token', result.data || '')
         await fetchUserInfo();
         const dep = (await getDept()).data;
-        setDept(dep);
-        console.log('@@dep --->',dep)
+        const depids = (await getDepIds()).data;
+        const users = (await getUser()).data;
+        console.log('@@dep --->', dep)
+        console.log('@@depids --->', depids)
+        console.log('@@users --->', users)
+        setDept(dep)
+        setDepids(depids)
+        setUsers(users)
         history.push('/');
         return;
       }

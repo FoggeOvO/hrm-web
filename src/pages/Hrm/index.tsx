@@ -3,78 +3,74 @@ import { PageContainer } from '@ant-design/pro-components';
 import { Avatar, Button, Card, List, Pagination, PaginationProps, Skeleton, Tree, TreeDataNode, TreeProps } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
-import { createStyles } from 'antd-style';
+import { getUserBydepId, getUserCountByDepId } from '@/services/hrm/api'
 import avatar from '../../../public/avatar/useravatar.png'
-import { PaginationAlign } from 'antd/es/pagination/Pagination';
 
-interface DataType {
-  gender?: string;
-  name: {
-    title?: string;
-    first?: string;
-    last?: string;
-  };
-  email?: string;
-  picture: {
-    large?: string;
-    medium?: string;
-    thumbnail?: string;
-  };
-  nat?: string;
-  loading: boolean;
+
+interface User {
+  id?: number
+  username?: string
+  type?: string
+  gender?: string
+  lastname?: string
+  level?: string
+  workcode?: string
+  position?: string
+  depid?: number
+  hiredate?: string
+  access?: number
+  deleted?: number
 }
-
-const count = 10;
-const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat,picture&noinfo`;
-
 
 const Hrm = () => {
 
-  const [list, setList] = useState<DataType[]>([]);
+  //1.拿到数据流中的users信息
+  const { depids } = useModel('depModel')
 
-  useEffect(() => {
-    fetch(fakeDataUrl)
-      .then((res) => res.json())
-      .then((res) => {
-        setList(res.results);
-      });
-  }, []);
 
-  console.log('@@', list)
+  const [current, setCurrent] = useState(1);
+  const [count, setCount] = useState<number>(1);
+  const [userList, setUserList] = useState<User[]>([])
+  const [selectdeps, setSelectdeps] = useState<string>('')
 
-  const [current, setCurrent] = useState(3);
-  const [align, setAlign] = useState<PaginationAlign>('end');
 
-  const onChange: PaginationProps['onChange'] = (page) => {
-    console.log(page);
+  const onChange: PaginationProps['onChange'] = async (page) => {
     setCurrent(page);
+    console.log('@@depids --->', depids)
+    const { data } = await getUserBydepId(selectdeps, page)
+    setUserList(data)
   };
 
-  const useStyles = createStyles(({ token }) => {
-    return {
-      container: {
-        height: '500px',
-        fontSize: '14px',
-        titleHeight: 50
-      },
-    };
-  });
-  const { styles } = useStyles();
   //使用数据流获取全局dep数据，并传给tree
   const depModel = useModel('depModel')
   const { dep } = depModel
   const treeData: TreeDataNode[] | undefined = dep
 
+  //先获取数据流中得人员数据
+  const userModel = useModel('userModel')
+  const { users } = userModel
   //选择数触发的事件
-  const onSelect: TreeProps['onSelect'] = (selectedKeys, info) => {
+  const onSelect: TreeProps['onSelect'] = async (selectedKeys, info) => {
     console.log('selected', selectedKeys, info);
     const { children, key } = info.node
-
     const cKeys = children ? children.map(item => item.key) : []
-    const deps = [key, ...cKeys]
-    console.log(deps)
+    const deps = [key, ...cKeys].join(',')
+    const res = await getUserCountByDepId(deps)
+    setCount(res.data)
+    try {
+      const { data } = await getUserBydepId(deps, 1)
+      setSelectdeps(deps)
+      setCurrent(1)
+      setUserList(data)
+    } catch (error) {
+      console.log('@@Hrm -> getUserBydepId error --->', error)
+    }
+  }
 
-  };
+  useEffect(() => {
+    setUserList(users)
+  }, [])
+
   const createUser = () => { }
 
   const editUser = () => { }
@@ -112,23 +108,23 @@ const Hrm = () => {
               <List
                 style={{ height: '100%', width: '100%', overflowY: 'scroll' }}
                 itemLayout="horizontal"
-                dataSource={list.slice(0, 10)}
+                dataSource={userList.slice(0, 10)}
                 renderItem={(item) => (
                   <List.Item style={{ height: '100%' }}
                     actions={[<a key="list-loadmore-edit">edit</a>, <a key="list-loadmore-more">more</a>]}
                   >
-                    <Skeleton avatar title={false} loading={item.loading} active>
+                    <Skeleton avatar title={false} loading={userList ? false : true} active>
                       <List.Item.Meta
                         avatar={<Avatar src={avatar} />}
-                        title={'this is a test'}
-                        description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                        title={item.lastname}
+                        description="this is a test"
                       />
                       <div>content</div>
                     </Skeleton>
                   </List.Item>
                 )}
               />
-              <Pagination style={{ alignSelf: 'flex-end', marginTop: '15px' }} current={current} onChange={onChange} total={50} />
+              <Pagination style={{ alignSelf: 'flex-end', marginTop: '15px' }} current={current} onChange={onChange} total={count} />
             </div>
           </Card>
         </div>
