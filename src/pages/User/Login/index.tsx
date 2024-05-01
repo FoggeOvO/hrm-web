@@ -141,13 +141,13 @@ const Login: React.FC = () => {
         await fetchUserInfo();
         const dep = (await getDept()).data;
         const depids = (await getDepIds()).data;
-        const users = (await getUser()).data;
+        // const users = (await getUser()).data;
         console.log('@@dep --->', dep)
         console.log('@@depids --->', depids)
-        console.log('@@users --->', users)
+        // console.log('@@users --->', users)
         setDept(dep)
         setDepids(depids)
-        setUsers(users)
+        // setUsers(users)
         history.push('/');
         return;
       }

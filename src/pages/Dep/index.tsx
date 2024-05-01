@@ -5,7 +5,7 @@ import { DownOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import { createStyles } from 'antd-style';
 import { useForm } from 'antd/es/form/Form'
-import DepDetail from '@/components/DepCreater';
+import DepDetail from '@/components/DeptComponent/Creater';
 
 
 

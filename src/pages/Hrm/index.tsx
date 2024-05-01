@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-components';
-import { Avatar, Button, Card, List, Pagination, PaginationProps, Skeleton, Tree, TreeDataNode, TreeProps } from 'antd';
+import { Avatar, Button, Card, Input, List, Pagination, PaginationProps, Skeleton, Tag, Tree, TreeDataNode, TreeProps } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import { getUserBydepId, getUserCountByDepId } from '@/services/hrm/api'
 import avatar from '../../../public/avatar/useravatar.png'
-
+import UserCreater from '@/components/UserComponent/Creater';
+import Editor from '@/components/UserComponent/Editor';
+import Operator from '@/components/UserComponent/Operator';
+import More from '@/components/UserComponent/More';
 
 interface User {
   id?: number
@@ -18,9 +21,11 @@ interface User {
   position?: string
   depid?: number
   hiredate?: string
+  status?:number
   access?: number
   deleted?: number
 }
+
 
 const Hrm = () => {
 
@@ -32,7 +37,7 @@ const Hrm = () => {
   const [count, setCount] = useState<number>(1);
   const [userList, setUserList] = useState<User[]>([])
   const [selectdeps, setSelectdeps] = useState<string>('')
-
+  const [newUser, setNewUser] = useState(false)
 
   const onChange: PaginationProps['onChange'] = async (page) => {
     setCurrent(page);
@@ -71,9 +76,10 @@ const Hrm = () => {
     setUserList(users)
   }, [])
 
-  const createUser = () => { }
+  const createUser = () => {
+    setNewUser(true)
+  }
 
-  const editUser = () => { }
 
   const delUser = () => { }
 
@@ -86,9 +92,8 @@ const Hrm = () => {
         <div id='head' style={{ height: '10%', width: '95%', marginBottom: '8px' }}>
           <Card id='head-content' style={{ height: '100%', width: '100%', }} >
             <Button type="primary" onClick={createUser} style={{ marginLeft: '15px' }}>新增人员</Button>
-            <Button type="primary" onClick={editUser} style={{ marginLeft: '15px' }}>编辑人员</Button>
-            <Button type="primary" onClick={delUser} style={{ marginLeft: '15px' }}>删除人员</Button>
-            <Button type="primary" onClick={saveUser} style={{ marginLeft: '15px' }}>保存更改</Button>
+            <Input style={{ height: '80%', width: '15%', marginLeft: '20px' }}></Input>
+            <Button type="primary" onClick={saveUser} style={{ marginLeft: '15px' }}>查找</Button>
           </Card>
         </div>
         <div id='content' style={{ display: 'flex', justifyContent: 'space-between', height: '80%', width: '95%' }}>
@@ -109,25 +114,30 @@ const Hrm = () => {
                 style={{ height: '100%', width: '100%', overflowY: 'scroll' }}
                 itemLayout="horizontal"
                 dataSource={userList.slice(0, 10)}
-                renderItem={(item) => (
-                  <List.Item style={{ height: '100%' }}
-                    actions={[<a key="list-loadmore-edit">edit</a>, <a key="list-loadmore-more">more</a>]}
+                renderItem={(item) => {
+                  return (<List.Item style={{ height: '100%' }}
+                    actions={[<Editor {...item}/>, <Operator  {...item}/>, <More />]}
                   >
                     <Skeleton avatar title={false} loading={userList ? false : true} active>
                       <List.Item.Meta
                         avatar={<Avatar src={avatar} />}
                         title={item.lastname}
-                        description="this is a test"
+                        description=""
                       />
-                      <div>content</div>
+                      <div> <Tag color="magenta">享有房补</Tag></div>
+                      <div> <Tag color="magenta">享有餐补</Tag></div>
+                      <div> <Tag color="magenta">享有13薪</Tag></div>
+                      <div> <Tag color="magenta">技术岗</Tag></div>
                     </Skeleton>
-                  </List.Item>
-                )}
+                  </List.Item>)
+
+                }}
               />
               <Pagination style={{ alignSelf: 'flex-end', marginTop: '15px' }} current={current} onChange={onChange} total={count} />
             </div>
           </Card>
         </div>
+        <UserCreater {...{ newUser, setNewUser }} />
       </div>
     </PageContainer>
   )
