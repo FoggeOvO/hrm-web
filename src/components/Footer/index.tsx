@@ -12,13 +12,13 @@ const Footer: React.FC = () => {
         {
           key: 'Author',
           title: <UsergroupDeleteOutlined />,
-          href: 'https://t.me/Ro15888',
+          href: 'https://telegram.me/Ro15888',
           blankTarget: true,
         },
         {
           key: 'telegram',
           title: 'Ro.',
-          href: 'https://t.me/Ro15888',
+          href: 'https://telegram.me/Ro15888',
           blankTarget: true,
         },
       ]}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-components';
-import { Avatar, Button, Card, Input, List, Pagination, PaginationProps, Skeleton, Tag, Tree, TreeDataNode, TreeProps } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Avatar, Button, Card, Input, List, Pagination, PaginationProps, Skeleton, Tag, Tree, TreeDataNode, TreeProps, Upload, UploadProps, message } from 'antd';
+import { DownOutlined, UploadOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
 import { getUserBydepId, getUserCountByDepId } from '@/services/hrm/api'
 import avatar from '../../../public/avatar/useravatar.png'
@@ -21,13 +21,33 @@ interface User {
   position?: string
   depid?: number
   hiredate?: string
-  status?:number
+  status?: number
   access?: number
   deleted?: number
 }
 
+const empUploader: UploadProps = {
+  name: 'file',
+  action: '/api/import/userImport',
+  headers: {
+    authorization: 'authorization-text',
+    contentType: 'multipart/form-data'
+  },
+  onChange(info) {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+};
+
 
 const Hrm = () => {
+
 
   //1.拿到数据流中的users信息
   const { depids } = useModel('depModel')
@@ -94,6 +114,9 @@ const Hrm = () => {
             <Button type="primary" onClick={createUser} style={{ marginLeft: '15px' }}>新增人员</Button>
             <Input style={{ height: '80%', width: '15%', marginLeft: '20px' }}></Input>
             <Button type="primary" onClick={saveUser} style={{ marginLeft: '15px' }}>查找</Button>
+            <Upload {...empUploader}>
+              <Button style={{ marginLeft: '20px' }} icon={<UploadOutlined />}>人员导入</Button>
+            </Upload>
           </Card>
         </div>
         <div id='content' style={{ display: 'flex', justifyContent: 'space-between', height: '80%', width: '95%' }}>
@@ -116,7 +139,7 @@ const Hrm = () => {
                 dataSource={userList.slice(0, 10)}
                 renderItem={(item) => {
                   return (<List.Item style={{ height: '100%' }}
-                    actions={[<Editor {...item}/>, <Operator  {...item}/>, <More />]}
+                    actions={[<Editor {...item} />, <Operator  {...item} />, <More />]}
                   >
                     <Skeleton avatar title={false} loading={userList ? false : true} active>
                       <List.Item.Meta

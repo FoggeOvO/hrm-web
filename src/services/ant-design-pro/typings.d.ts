@@ -6,6 +6,7 @@ declare namespace API {
     code?: number,
     msg?: string,
     data?: any,
+    count?:number
     timestamp?: number
   }
 

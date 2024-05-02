@@ -48,3 +48,12 @@ export const getUserBydepId = async (depIds:string,current:number) => {
     },
   })
 }
+
+export const getUserByAccess = async (access:number) => {
+  return request<API.Result>(`/api/user/getUserByAccess/${access}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+}
