@@ -83,6 +83,8 @@ const Operator = (props:User) => {
         newDep:title
     })
 
+    const depCheckbox = false
+
     return (
         <>
             <Button type="link" onClick={showOperator} icon={<SettingTwoTone />}>
@@ -129,7 +131,7 @@ const Operator = (props:User) => {
                         </Form.Item>
 
                         {/* 这里是选择部门得框框 */}
-                        <Choose {...{searched, setSearched, setNewdep}}/> 
+                        <Choose {...{depCheckbox, searched, setSearched, setNewdep}}/> 
 
                         <Form.Item
                             style={itemStyle}

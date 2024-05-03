@@ -68,7 +68,7 @@ export default [
       {
         path: '/att/result',
         name: 'att-result',
-        component: './Hrm'
+        component: './Att'
       },
     ]
   },
@@ -106,6 +106,7 @@ export default [
       {
         path: '/acc/user',
         name: 'acc-user',
+        access: 'KUYA',
         component: './Hrm'
       },
     ]
@@ -114,7 +115,7 @@ export default [
     path: '/admin',
     name: 'admin',
     icon: 'crown',
-    access: 'canAdmin',
+    access: 'KUYA',
     routes: [
       {
         path: '/admin',
@@ -126,13 +127,6 @@ export default [
         component: './Admin',
       },
     ],
-  },
-  {
-    name: 'list.table-list',
-    icon: 'table',
-    path: '/list',
-    access: 'canAdmin',
-    component: './TableList',
   },
   {
     path: '/',

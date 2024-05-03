@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { PageContainer } from '@ant-design/pro-components';
 import { Avatar, Button, Card, Input, List, Pagination, PaginationProps, Skeleton, Tag, Tree, TreeDataNode, TreeProps, Upload, UploadProps, message } from 'antd';
 import { DownOutlined, UploadOutlined } from '@ant-design/icons';
@@ -47,6 +47,8 @@ const empUploader: UploadProps = {
 
 
 const Hrm = () => {
+
+  const userSearch = useRef<any>(null)
 
 
   //1.拿到数据流中的users信息
@@ -103,7 +105,12 @@ const Hrm = () => {
 
   const delUser = () => { }
 
-  const saveUser = () => { }
+  const saveUser = () => {
+    if(userSearch.current){
+      console.log('@@userSearch --->', userSearch.current.input.value)
+      //TODO 这里需要加入搜索的请求
+    }
+  }
 
 
   return (
@@ -112,7 +119,7 @@ const Hrm = () => {
         <div id='head' style={{ height: '10%', width: '95%', marginBottom: '8px' }}>
           <Card id='head-content' style={{ height: '100%', width: '100%', }} >
             <Button type="primary" onClick={createUser} style={{ marginLeft: '15px' }}>新增人员</Button>
-            <Input style={{ height: '80%', width: '15%', marginLeft: '20px' }}></Input>
+            <Input style={{ height: '80%', width: '15%', marginLeft: '20px' }} ref={userSearch} placeholder='输入工号或名称搜索' />
             <Button type="primary" onClick={saveUser} style={{ marginLeft: '15px' }}>查找</Button>
             <Upload {...empUploader}>
               <Button style={{ marginLeft: '20px' }} icon={<UploadOutlined />}>人员导入</Button>
@@ -139,7 +146,7 @@ const Hrm = () => {
                 dataSource={userList.slice(0, 10)}
                 renderItem={(item) => {
                   return (<List.Item style={{ height: '100%' }}
-                    actions={[<Editor {...item} />, <Operator  {...item} />, <More />]}
+                    actions={[<Editor {...item} />, <Operator  {...item} />, <More {...item}/>]}
                   >
                     <Skeleton avatar title={false} loading={userList ? false : true} active>
                       <List.Item.Meta

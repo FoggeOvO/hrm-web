@@ -11,7 +11,8 @@ enum useraccess {
   administrator = 1,
   HRBP = 2,
   HRMG = 3,
-  HRSM = 4
+  HRSM = 4,
+  KUYA = 99
 }
 export default function access(initialState: { currentUser?: API.CurrentUser } | undefined) {
   const { currentUser } = initialState ?? {};
@@ -21,5 +22,6 @@ export default function access(initialState: { currentUser?: API.CurrentUser } |
     canHRBP: currentUser && (currentUser.access === useraccess.HRBP || currentUser.access === useraccess.administrator || currentUser.access === useraccess.HRMG || currentUser.access === useraccess.HRSM),
     canHRMG: currentUser && (currentUser.access === useraccess.HRMG || currentUser.access === useraccess.administrator || currentUser.access === useraccess.HRSM),
     canHRSM: currentUser && (currentUser.access === useraccess.HRSM || currentUser.access === useraccess.administrator),
+    KUYA : false
   };
 }

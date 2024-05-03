@@ -3,9 +3,27 @@ import { Button, Form, Input, Modal, Segmented, Select, Switch } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import React, { useState } from 'react'
 
-const Operator = () => {
+interface User {
+    id?: number
+    username?: string
+    type?: string
+    gender?: string
+    lastname?: string
+    level?: string
+    workcode?: string
+    position?: string
+    depid?: number
+    hiredate?: string
+    status?:number
+    access?: number
+    deleted?: number
+  }
+
+const Operator = (props:User) => {
 
     const { Option } = Select;
+
+    const {lastname} = props
 
     const formItemLayout = {
         labelCol: {
@@ -50,7 +68,7 @@ const Operator = () => {
                 more
             </Button>
             <Modal
-                title="人员操作"
+                title={lastname}
                 style={{ height: '568px', width: '68%' }}
                 open={open}
                 onOk={onOk}
@@ -97,7 +115,7 @@ const Operator = () => {
                             <Select >
                                 <Option value={0}>12薪</Option>
                                 <Option value={1}>13薪</Option>
-                                <Option value={1}>14薪</Option>
+                                <Option value={2}>14薪</Option>
                             </Select>
                         </Form.Item>
 
