@@ -23,7 +23,7 @@ interface User {
 const Editor = (props:User) => {
   const { Option } = Select;
   const [open, setOpen] = useState(false);
-  const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState(true);
 
   const {lastname,workcode,status,position,gender,hiredate,level} = props
 

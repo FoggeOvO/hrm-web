@@ -22,6 +22,10 @@ interface User {
   depid?: number
   hiredate?: string
   status?: number
+  house?: number
+  tech?: number
+  meal?: number
+  annul?: number
   access?: number
   deleted?: number
 }
@@ -65,6 +69,7 @@ const Hrm = () => {
     setCurrent(page);
     console.log('@@depids --->', depids)
     const { data } = await getUserBydepId(selectdeps, page)
+    console.log('userData --->',  data)
     setUserList(data)
   };
 
@@ -73,19 +78,24 @@ const Hrm = () => {
   const { dep } = depModel
   const treeData: TreeDataNode[] | undefined = dep
 
+
   //先获取数据流中得人员数据
   const userModel = useModel('userModel')
   const { users } = userModel
-  //选择数触发的事件
+  //选择树触发的事件
   const onSelect: TreeProps['onSelect'] = async (selectedKeys, info) => {
     console.log('selected', selectedKeys, info);
     const { children, key } = info.node
+    console.log(info.node)
     const cKeys = children ? children.map(item => item.key) : []
     const deps = [key, ...cKeys].join(',')
     const res = await getUserCountByDepId(deps)
     setCount(res.data)
     try {
       const { data } = await getUserBydepId(deps, 1)
+      console.log(data)
+      const userids = data.map((item : any) => item.id).join(',')
+      console.log('@@userids ==>' ,userids)
       setSelectdeps(deps)
       setCurrent(1)
       setUserList(data)
@@ -154,10 +164,11 @@ const Hrm = () => {
                         title={item.lastname}
                         description=""
                       />
-                      <div> <Tag color="magenta">享有房补</Tag></div>
-                      <div> <Tag color="magenta">享有餐补</Tag></div>
-                      <div> <Tag color="magenta">享有13薪</Tag></div>
-                      <div> <Tag color="magenta">技术岗</Tag></div>
+                      {/* TODO */}
+                      <Tag hidden={item.house != 1} color="skyblue">享有房补</Tag>
+                      <Tag hidden={item.meal != 1} color="lime">享有餐补</Tag>
+                      <Tag hidden={item.annul === undefined } color="purple" >{(item.annul = 0)?"12薪":(item.annul = 1)?"13薪":"14薪"}</Tag>
+                      <Tag hidden={item.tech != 1} color="gold">技术岗</Tag>
                     </Skeleton>
                   </List.Item>)
 

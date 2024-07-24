@@ -2,7 +2,7 @@ import React, { Dispatch, Key, SetStateAction, useState } from 'react'
 import { Card, Modal, Tree, TreeDataNode, TreeProps } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { useModel } from '@umijs/max';
-import { CheckboxChangeEvent } from 'antd/es/checkbox';
+
 
 interface ChooseSate{
     depCheckbox:boolean

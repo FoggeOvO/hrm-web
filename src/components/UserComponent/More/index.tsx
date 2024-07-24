@@ -19,7 +19,7 @@ interface User {
     deleted?: number
   }
 
-const Operator = (props:User) => {
+const More = (props:User) => {
 
     const { Option } = Select;
 
@@ -136,4 +136,4 @@ const Operator = (props:User) => {
 }
 
 
-export default Operator
+export default More

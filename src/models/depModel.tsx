@@ -21,6 +21,5 @@ const depModel = () => {
     const [depinfo, setDepinfo] = useState<SelectdInfo>()
     const [depids, setDepids] = useState<string>('')
     return { dep, setDept, depinfo, setDepinfo, depids, setDepids}
-
 }
 export default depModel

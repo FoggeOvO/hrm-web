@@ -112,6 +112,20 @@ export default [
     ]
   },
   {
+    path: '/sys',
+    name: 'sys',
+    icon: 'safety',
+    component: '',
+    access: 'canAdmin',
+    routes:[
+      {
+        path: '/sys/field',
+        name: 'sys-field',
+        component: './Sys/Field'
+      },
+    ]
+  },
+  {
     path: '/admin',
     name: 'admin',
     icon: 'crown',
