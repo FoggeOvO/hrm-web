@@ -7,13 +7,14 @@ import classNames from 'classnames';
 const Field = () => {
     const addField = () => { }
     const delField = () => { }
-
+    const edit = () => { }
+    const del = () => { }
     interface DataType {
         key: string;
-        name: string;
-        age: number;
-        address: string;
-        tags: string[];
+        fieldName: string;
+        fieldValue: string;
+        fieldType: number;
+        selectId: number
     }
 
     const columns: TableProps<DataType>['columns'] = [
@@ -21,86 +22,81 @@ const Field = () => {
             title: '字段显示名',
             dataIndex: 'showName',
             key: 'showName',
+            align: 'center'
         },
         {
             title: '字段名称',
             dataIndex: 'fieldName',
             key: 'fieldName',
+            align: 'center'
         },
         {
             title: '字段类型',
             dataIndex: 'fieldType',
             key: 'fieldType',
+            align: 'center'
         },
         {
             title: '关联选择框',
             key: 'select_id',
             dataIndex: 'select_id',
-            render: (_, { tags }) => (
-                <>
-                    {tags.map((tag) => {
-                        let color = tag.length > 5 ? 'geekblue' : 'green';
-                        if (tag === 'loser') {
-                            color = 'volcano';
-                        }
-                        return (
-                            <Tag color={color} key={tag}>
-                                {tag.toUpperCase()}
-                            </Tag>
-                        );
-                    })}
-                </>
-            ),
+            align: 'center'
         },
         {
-            title: 'Action',
+            title: '操作',
             key: 'action',
             render: (_, record) => (
                 <Space size="middle">
-                    <a>Invite {record.name}</a>
-                    <a>Delete</a>
+                    <Button onClick={edit}>修改</Button>
+                    <Button danger onClick={del}>删除</Button>
                 </Space>
             ),
+            align: 'center'
         },
     ];
 
     const data: DataType[] = [
         {
             key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-            tags: ['nice', 'developer'],
+            fieldName: '是否享有房补',
+            fieldValue: 'field1',
+            fieldType: 1,
+            selectId: -1,
         },
         {
             key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-            tags: ['loser'],
+            fieldName: '是否享有餐补',
+            fieldValue: 'field2',
+            fieldType: 1,
+            selectId: -1,
         },
         {
             key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sydney No. 1 Lake Park',
-            tags: ['cool', 'teacher'],
+            fieldName: '是否享技术岗',
+            fieldValue: 'field3',
+            fieldType: 1,
+            selectId: -1,
+        },
+        {
+            key: '4',
+            fieldName: '年终奖政策',
+            fieldValue: 'field4',
+            fieldType: 1,
+            selectId: 2,
         },
     ];
 
     return (
         <PageContainer >
-            <div id='dept-body' style={{ height: '768px', width: '100%', }}>
-                <div id='head' style={{ height: '10%', marginBottom: '8px' }}>
-                    <Card id='head-content' style={{ height: '100%', width: '100%' }} className='clearfix'>
-                        <Button type="primary" onClick={addField} style={{ marginLeft: '15px', }} className='rightfix'>+</Button>
-                        <Button type="primary" onClick={delField} style={{ marginLeft: '15px', }} className='rightfix'>-</Button>
-                    </Card>
-                </div>
-                <div id='content' style={{ display: 'flex', justifyContent: 'space-between', height: '80%', width: '95%' }}>
-                    <Table columns={columns} dataSource={data} />
-                </div>
-            </div>
+            <Card id='dept-body' style={{ height: '768px'}}>
+                <Card id='head-content' className='clearfix'>
+                    <Button type="primary" onClick={addField} style={{ marginLeft: '15px', }} className='rightfix'>+</Button>
+                    <Button type="primary" onClick={delField} style={{ marginLeft: '15px', }} className='rightfix'>-</Button>
+                </Card>
+
+                <Table columns={columns} dataSource={data} />
+
+            </Card>
         </PageContainer>
     )
 }

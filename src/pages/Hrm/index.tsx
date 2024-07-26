@@ -155,23 +155,20 @@ const Hrm = () => {
                 itemLayout="horizontal"
                 dataSource={userList.slice(0, 10)}
                 renderItem={(item) => {
-                  return (<List.Item style={{ height: '100%' }}
-                    actions={[<Editor {...item} />, <Operator  {...item} />, <More {...item}/>]}
-                  >
+                  return (
+                  <List.Item style={{ height: '100%' }} actions={[<Editor {...item} />, <Operator  {...item} />, <More {...item}/>]} >
                     <Skeleton avatar title={false} loading={userList ? false : true} active>
                       <List.Item.Meta
                         avatar={<Avatar src={avatar} />}
                         title={item.lastname}
                         description=""
                       />
-                      {/* TODO */}
                       <Tag hidden={item.house != 1} color="skyblue">享有房补</Tag>
                       <Tag hidden={item.meal != 1} color="lime">享有餐补</Tag>
                       <Tag hidden={item.annul === undefined } color="purple" >{(item.annul = 0)?"12薪":(item.annul = 1)?"13薪":"14薪"}</Tag>
                       <Tag hidden={item.tech != 1} color="gold">技术岗</Tag>
                     </Skeleton>
                   </List.Item>)
-
                 }}
               />
               <Pagination style={{ alignSelf: 'flex-end', marginTop: '15px' }} current={current} onChange={onChange} total={count} />
